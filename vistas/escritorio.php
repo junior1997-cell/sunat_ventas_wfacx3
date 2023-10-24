@@ -6,8 +6,6 @@ session_start();
 
 ob_start();
 
-
-
 if (!isset($_SESSION["nombre"])) {
 
   header("Location: ../vistas/login.php");
@@ -15,13 +13,7 @@ if (!isset($_SESSION["nombre"])) {
 
   require 'header.php';
 
-
-
   if ($_SESSION['escritorio'] == 1) {
-
-
-
-
 
     require_once "../modelos/Consultas.php";
     $consulta = new Consultas();
@@ -30,50 +22,32 @@ if (!isset($_SESSION["nombre"])) {
     $regc = $rsptac->fetch_object();
     $totalc = $regc->total_compra;
 
-
-
     $rsptav = $consulta->totalventahoycotizacion($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvcotihoy = $regv->total_venta_coti_hoy;
-
-
 
     $rsptav = $consulta->totalventahoyFactura($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvfacturahoy = $regv->total_venta_factura_hoy;
 
-
-
     $rsptav = $consulta->totalventahoyBoleta($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvboletahoy = $regv->total_venta_boleta_hoy;
-
-
 
     $rsptav = $consulta->totalventahoyNotapedido($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvnpedidohoy = $regv->total_venta_npedido_hoy;
 
-
-
     $totalventas = 0;
     $totalventas = $totalvfacturahoy + $totalvboletahoy + $totalvnpedidohoy;
-
-
-
-
-
 
     $rsptav = $consulta->totalventahoyFacturaServicio($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvfacturaServiciohoy = $regv->total_venta_factura_hoy;
 
-
-
     $rsptav = $consulta->totalventahoyBoletaServicio($_SESSION['idempresa']);
     $regv = $rsptav->fetch_object();
     $totalvboletaServiciohoy = $regv->total_venta_boleta_hoy;
-
 
     //dash card
 
@@ -94,8 +68,6 @@ if (!isset($_SESSION["nombre"])) {
     $regv = $rsptav->fetch_object();
     $totaClientesRegistrados = $regv->total;
 
-
-
     //Productos mas vendidos
     $rsptav = $consulta->productosmasvendidos();
     $regv = $rsptav->fetch_object();
@@ -103,10 +75,6 @@ if (!isset($_SESSION["nombre"])) {
 
     //clientes top
     $rsptaClientesTop = $consulta->ClientesTop();
-
-
-
-
 
     //Tipo de cambio
     date_default_timezone_set('America/Lima');
@@ -128,13 +96,11 @@ if (!isset($_SESSION["nombre"])) {
       $tccompra = $regtc->compra;
       $tcventa = $regtc->venta;
 
-
       // if ($fechatc==$hoy2) {
       //      $dfecha="readonly";
       //    }else{
       //      $dfecha="";
       //  }
-
 
       if ($fechatc == '') {
         $dfecha = "";
@@ -146,111 +112,59 @@ if (!isset($_SESSION["nombre"])) {
 
     date_default_timezone_set('America/Lima');
 
-    $hoy = date('Y/m/d');
-
-    $hoy2 = date('Y-m-d');
-
-
+    $hoy = date('Y/m/d'); $hoy2 = date('Y-m-d');
 
     $rsptatc = $consulta->mostrarcaja($hoy, $_SESSION['idempresa']);
 
     $regtc = $rsptatc->fetch_object();
 
-
-
     if (!isset($regtc)) {
 
       $idcaja = "";
-
       $idcajai = "";
-
       $idcajas = "";
-
       $fecha = "";
-
       $montoi = "0";
-
       $montof = "0";
-
       $dfecha = "";
-
       $estado = "";
-
       $cajaestado = "";
-
       $mensajecaja = "ABRIR CAJA";
-
       $hb = "";
-
       $color = "";
-
       $btn = "";
     } else {
 
       $idcaja = $regtc->idcaja;
-
       $idcajai = $regtc->idcaja;
-
       $idcajas = $regtc->idcaja;
-
       $fecha = $regtc->fecha;
-
       $montoi = $regtc->montoi;
-
       $montof = $regtc->montof;
-
       $estado = $regtc->estado;
 
+      if ($fecha == $hoy2) {$dfecha = "readonly";} else {$dfecha = "";}
 
-
-      if ($fecha == $hoy2) {
-
-        $dfecha = "readonly";
-      } else {
-
-        $dfecha = "";
-      }
-
-
-
-      if ($estado == '') {
-
-        $mensajecaja = 'ABRIR CAJA';
-      }
-
-
+      if ($estado == '') {$mensajecaja = 'ABRIR CAJA';}
 
       if ($estado == '1') {
 
         $mensajecaja = 'CERRAR CAJA';
-
         $hb = "";
-
         $cajaestado = 'ABIERTA';
-
         $color = 'green';
-
         $btn = "";
       } else {
 
         $mensajecaja = 'ABRIR CAJA';
-
         $hb = "readonly";
-
         $cajaestado = 'CERRADA';
-
         $color = 'red';
-
         $btn = "disabled";
       }
     }
 
     //Tipor de caja
-
-
-
-
-
     //Datos para mostrar el gráfico de barras de las compras
 
     $compras10 = $consulta->comprasultimos_10dias($_SESSION['idempresa']);
@@ -278,8 +192,6 @@ if (!isset($_SESSION["nombre"])) {
 
     $mes = substr($mes, 0, -1);
 
-
-
     //Datos para mostrar el gráfico de barras de las ventas
 
     $ventas12 = $consulta->ventasultimos_12meses($_SESSION['idempresa']);
@@ -298,31 +210,31 @@ if (!isset($_SESSION["nombre"])) {
     //Quitamos la última coma
 
     $fechasv = $fechasv;
-
     $totalesv = $totalesv;
-
-
-
-
-
     $consultaSTs = $consulta->consultaestados();
-
     $estado = '';
-
     $totalestado = '';
-
     $stEmitido = 0;
-
     $stFirmado = 0;
-
     $stAceptado = 0;
-
     $stAnulado = 0;
-
     $stNota = 0;
-
     $stFisico = 0;
-
+    //-----------------
+    $Op_Emitido = 0;
+    $Op_stFirmado = 0;
+    $Op_stAceptado = 0;
+    $Op_stAnulado = 0;
+    $Op_stNota = 0;
+    $Op_stFisico = 0;
+    //------------------
+    $t_Op_Emitido = 0;
+    $t_Op_stFirmado = 0;
+    $t_Op_stAceptado = 0;
+    $t_Op_stAnulado = 0;
+    $t_Op_stNota = 0;
+    $t_Op_stFisico = 0;
+    
     while ($regestados = $consultaSTs->fetch_object()) {
 
       $estadoD = $regestados->estado;
@@ -331,55 +243,22 @@ if (!isset($_SESSION["nombre"])) {
 
       switch ($estadoD) {
 
-        case '1':
+        case '1': $stEmitido  = $totalestadoD; break;
 
-          $stEmitido = $totalestadoD;
+        case '5': $stAceptado = $totalestadoD; break;
 
-          break;
+        case '5': $stAceptado = $totalestadoD; break;
 
-        case '5':
+        case '3': $stAnulado  = $totalestadoD; break;
 
-          $stAceptado = $totalestadoD;;
+        case '4': $stFirmado  = $totalestadoD; break;
 
-          break;
+        case '6': $stFisico   = $totalestadoD; break;
 
-        case '5':
-
-          $stAceptado = $totalestadoD;;
-
-          break;
-
-        case '3':
-
-          $stAnulado = $totalestadoD;;
-
-          break;
-
-        case '4':
-
-          $stFirmado = $totalestadoD;;
-
-          break;
-
-        case '6':
-
-          $stFisico = $totalestadoD;;
-
-          break;
-
-
-
-        default:
-
-          # code...
-
-          break;
+        default:# code...
+        break;
       }
     }
-
-
-
-
 
     $consultaSTsCoti = $consulta->consultaestadoscotizaciones();
 
@@ -399,29 +278,15 @@ if (!isset($_SESSION["nombre"])) {
 
       switch ($estadoDCoti) {
 
-        case '1':
+        case '1':$stEmitidoCoti = $totalestadoDCoti; break;
 
-          $stEmitidoCoti = $totalestadoDCoti;
-
-          break;
-
-        case '5':
-
-          $stAceptadoCoti = $totalestadoDCoti;;
-
-          break;
+        case '5': $stAceptadoCoti = $totalestadoDCoti; break;
 
         default:
 
-          break;
+        break;
       }
     }
-
-
-
-
-
-
 
     $consultaSTsOs = $consulta->consultaestadosdocumentoC();
 
@@ -441,25 +306,15 @@ if (!isset($_SESSION["nombre"])) {
 
       switch ($estadoDCoti) {
 
-        case '1':
+        case '1': $stEmitidoDcobranza = $totalestadoDcobranza;break;
 
-          $stEmitidoDcobranza = $totalestadoDcobranza;
-
-          break;
-
-        case '5':
-
-          $stAceptadoddcobranza = $totalestadoDcobranza;;
-
-          break;
+        case '5': $stAceptadoddcobranza = $totalestadoDcobranza; break;
 
         default:
 
-          break;
+        break;
       }
     }
-
-
 
     $lunes = '0.00';
     $martes = '0.00';
@@ -516,9 +371,6 @@ if (!isset($_SESSION["nombre"])) {
       }
     }
 
-
-
-
     require_once "../modelos/Factura.php";
 
     $factura = new Factura();
@@ -527,33 +379,22 @@ if (!isset($_SESSION["nombre"])) {
 
     $datose = $datos->fetch_object();
 
-
-
 ?>
-
-
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"> -->
 
     <!--Contenido-->
 
 
-
     <!-- Modal ABRIR / CERRAR CAJA -->
 
     <div class="modal fade" id="modalcaja">
-
-
 
       <div class="modal-dialog" style="width: 60% !important;">
 
         <div class="modal-content">
 
-
-
           <div class="modal-header">CAJA</div>
-
-
 
           <form name="formulariocaja" id="formulariocaja" method="POST">
 
@@ -569,8 +410,6 @@ if (!isset($_SESSION["nombre"])) {
 
               </div>
 
-
-
               <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-12">
 
                 Monto inicial del día: <input type="text" name="montoi" id="montoi" placeholder="Monto inicial" value=" <?php echo $montoi; ?> " class="" <?php echo $hb; ?> onkeypress="return NumCheck(event, this)">
@@ -583,10 +422,6 @@ if (!isset($_SESSION["nombre"])) {
 
               </div>
 
-
-
-
-
               <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
 
                 <button class="btn btn-primary" type="submit" id="btngrabar" name="btngrabar">
@@ -596,7 +431,6 @@ if (!isset($_SESSION["nombre"])) {
                 </button>
 
               </div>
-
 
               <div class="form-group col-lg-2 col-md-6 col-sm-6 col-xs-12">
 
@@ -608,8 +442,6 @@ if (!isset($_SESSION["nombre"])) {
 
               </div>
 
-
-
               <div class="form-group col-lg-2 col-md-6 col-sm-6 col-xs-12">
 
                 <a href="#salidacaja" data-toggle="modal"> <button class="btn btn-danger" type="submit" id="btnsalida" name="btnsalida" <?php echo $btn; ?>>
@@ -619,16 +451,6 @@ if (!isset($_SESSION["nombre"])) {
                   </button></a>
 
               </div>
-
-
-
-
-
-
-
-
-
-
 
               <div class="form-group col-lg-2 col-md-6 col-sm-6 col-xs-12">
 
@@ -640,27 +462,17 @@ if (!isset($_SESSION["nombre"])) {
 
               </div>
 
-
-
               <div class="form-group col-lg-2 col-md-6 col-sm-6 col-xs-12">
 
                 CAJA: <label style="font-size: 18px; color:<?php echo $color; ?>;"> <?php echo $cajaestado; ?> </label>
 
               </div>
 
-
-
             </div>
-
-
 
             <div class="form-group col-lg-12 col-md-6 col-sm-6 col-xs-12">
 
-
-
             </div>
-
-
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
@@ -671,20 +483,13 @@ if (!isset($_SESSION["nombre"])) {
                 <thead>
 
                   <th>Id</th>
-
                   <th>Fecha</th>
-
-
-
                   <th>Inicial </th>
-
                   <th>Final</th>
 
                 </thead>
 
                 <tbody>
-
-
 
                 </tbody>
 
@@ -692,15 +497,7 @@ if (!isset($_SESSION["nombre"])) {
 
             </div>
 
-
-
-
-
-
-
           </form>
-
-
 
           <div class="modal-footer">
 
@@ -713,11 +510,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
 
     </div>
-
-
-
-
-
 
     <!-- Modal ABRIR / CERRAR CAJA -->
 
@@ -733,8 +525,6 @@ if (!isset($_SESSION["nombre"])) {
 
             <button type="button" class="btn btn-danger btn-ver" data-dismiss="modal">Cerrar</button>
 
-
-
           </div>
 
         </div>
@@ -742,12 +532,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
 
     </div>
-
-
-
-
-
-
 
     <!-- Modal REPORTE ---------------------------------------------->
 
@@ -769,32 +553,18 @@ if (!isset($_SESSION["nombre"])) {
 
               <select class="" name="ano" id="ano" onchange="listarValidar()">
 
-
-
                 <option value="2017">2017</option>
-
                 <option value="2018">2018</option>
-
                 <option value="2019">2019</option>
-
                 <option value="2020">2020</option>
-
                 <option value="2021">2021</option>
-
                 <option value="2022">2022</option>
-
                 <option value="2023">2023</option>
-
                 <option value="2024">2024</option>
-
                 <option value="2025">2025</option>
-
                 <option value="2026">2026</option>
-
                 <option value="2027">2027</option>
-
                 <option value="2028">2028</option>
-
                 <option value="2029">2029</option>
 
               </select>
@@ -803,12 +573,6 @@ if (!isset($_SESSION["nombre"])) {
 
             </div>
 
-
-
-
-
-
-
             <div class="form-group col-lg-3 col-md-4 col-sm-6 col-xs-12">
 
               <label> Mes: </label>
@@ -816,40 +580,23 @@ if (!isset($_SESSION["nombre"])) {
               <select class="" name="mes" id="mes" onchange="listarValidar()">
 
                 <option value="0">todos</option>
-
                 <option value="1">Enero</option>
-
                 <option value="2">Febrero</option>
-
                 <option value="3">Marzo</option>
-
                 <option value="4">Abril</option>
-
                 <option value="5">Mayo</option>
-
                 <option value="6">Junio</option>
-
                 <option value="7">Julio</option>
-
                 <option value="8">Agosto</option>
-
                 <option value="9">Septiembre</option>
-
                 <option value="10">Octubre</option>
-
                 <option value="11">Noviembre</option>
-
                 <option value="12">Diciembre</option>
-
               </select>
 
               <input type="hidden" name="mes_1" id="mes_1">
 
             </div>
-
-
-
-
 
             <div class="form-group col-lg-3 col-md-4 col-sm-6 col-xs-12">
 
@@ -858,76 +605,41 @@ if (!isset($_SESSION["nombre"])) {
               <select class="" name="dia" id="dia" onchange="listarValidar()">
 
                 <option value="01">01</option>
-
                 <option value="02">02</option>
-
                 <option value="03">03</option>
-
                 <option value="04">04</option>
-
                 <option value="05">05</option>
-
                 <option value="06">06</option>
-
                 <option value="07">07</option>
-
                 <option value="08">08</option>
-
                 <option value="09">09</option>
-
                 <option value="10">10</option>
-
                 <option value="11">11</option>
-
                 <option value="12">12</option>
-
                 <option value="13">13</option>
-
                 <option value="14">14</option>
-
                 <option value="15">15</option>
-
                 <option value="16">16</option>
-
                 <option value="17">17</option>
-
                 <option value="18">18</option>
-
                 <option value="19">19</option>
-
                 <option value="20">20</option>
-
                 <option value="21">21</option>
-
                 <option value="22">22</option>
-
                 <option value="23">23</option>
-
                 <option value="24">24</option>
-
                 <option value="25">25</option>
-
                 <option value="26">26</option>
-
                 <option value="27">27</option>
-
                 <option value="28">28</option>
-
                 <option value="29">29</option>
-
                 <option value="30">30</option>
-
                 <option value="31">31</option>
-
-
-
               </select>
 
               <input type="hidden" name="mes_1" id="mes_1">
 
             </div>
-
-
 
             <!-- <div class="form-group col-lg-2 col-md-4 col-sm-6 col-xs-12">
 
@@ -935,34 +647,22 @@ if (!isset($_SESSION["nombre"])) {
 
         </button>
 
-</div> -->
-
-
+         </div> -->
 
             <div class="form-group col-lg-12 col-md-4 col-sm-6 col-xs-12">
 
             </div>
 
-
-
-
-
             <!-- centro -->
-
-
 
             <table id="tbllistadocajavalidar" class="table table-striped table-bordered table-condensed table-hover" style="font-size: 12px;">
 
               <thead>
 
                 <th>FECHA</th>
-
                 <th>MONTO</th>
-
                 <th>CONCEPTO</th>
-
                 <th>TIPO</th>
-
               </thead>
 
               <tbody>
@@ -971,19 +671,11 @@ if (!isset($_SESSION["nombre"])) {
 
             </table>
 
-
-
-
-
-
-
           </form>
 
           <div class="modal-footer">
 
             <button type="button" class="btn btn-danger btn-ver" data-dismiss="modal">Cerrar</button>
-
-
 
           </div>
 
@@ -992,12 +684,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
 
     </div>
-
-
-
-
-
-
 
     <!-- Modal ABRIR / INGRESO CAJA -->
 
@@ -1033,8 +719,6 @@ if (!isset($_SESSION["nombre"])) {
 
             </div>
 
-
-
             <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
 
               <button class="btn btn-primary" type="submit" id="btngrabar" name="btngrabar">
@@ -1058,10 +742,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
 
     </div>
-
-
-
-
 
     <!-- Modal ABRIR / SALIDA CAJA -->
 
@@ -1097,8 +777,6 @@ if (!isset($_SESSION["nombre"])) {
 
             </div>
 
-
-
             <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
 
               <button class="btn btn-primary" type="submit" id="btngrabar" name="btngrabar">
@@ -1122,8 +800,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
 
     </div>
-
-
 
     <!-- Modal tipo de cambio -->
     <div class="modal fade" id="modalTcambio" tabindex="-1" aria-labelledby="modalTcambio" aria-hidden="true">
@@ -1161,9 +837,6 @@ if (!isset($_SESSION["nombre"])) {
         </div>
       </div>
     </div>
-
-
-
 
     <!-- Start::page-header -->
 
@@ -1536,8 +1209,6 @@ if (!isset($_SESSION["nombre"])) {
                       <div class="lead-source-value">
                         <span class="d-block fs-14">Total Items</span>
                         <span id="total-items-value" class="d-block fs-25 fw-bold"></span>
-
-
                       </div>
                     </div>
                     <div class="row row-cols-12 border-top border-block-start-dashed">
@@ -1600,13 +1271,30 @@ if (!isset($_SESSION["nombre"])) {
                       </div>
                     </div>
                     <div class="progress-stacked progress-animate progress-xs mb-4">
-                      <!-- Aquí vamos a mostrar los valores en porcentaje en las barras de progreso -->
-                      <div class="progress-bar" role="progressbar" style="width: <?php echo ($stEmitido / ($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico)) * 100; ?>%" aria-valuenow="<?php echo $stEmitido; ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                      <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo ($stFirmado / ($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico)) * 100; ?>%" aria-valuenow="<?php echo $stFirmado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
 
-                      <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo ($stAceptado / ($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico)) * 100; ?>%" aria-valuenow="<?php echo $stAceptado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo ($stAnulado / ($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico)) * 100; ?>%" aria-valuenow="<?php echo $stAnulado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo ($stFisico / ($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico)) * 100; ?>%" aria-valuenow="<?php echo $stFisico; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    <?php    
+                    
+                    $Op_Emitido    =($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico);
+                    $Op_stFirmado  =($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico);
+                    $Op_stAceptado =($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico);
+                    $Op_stAnulado  =($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico);
+                    $Op_stFisico   =($stEmitido + $stFirmado + $stAceptado + $stAnulado + $stFisico);
+                    //------------------                   
+                    $t_Op_Emitido    =  $Op_Emitido > 0 ?  $stEmitido/$Op_Emitido : 0 ;
+                    $t_Op_stFirmado  = $Op_stFirmado > 0 ? $stFirmado/$Op_stFirmado : 0 ;
+                    $t_Op_stAceptado = $Op_stAceptado > 0 ? $stAceptado/$Op_stAceptado : 0 ;
+                    $t_Op_stAnulado  = $Op_stAnulado > 0 ? $stAnulado/$Op_stAnulado : 0 ;
+                    $t_Op_stFisico   = $Op_stFisico > 0 ? $stFisico/$Op_stFisico : 0 ; 
+
+                    ?>
+
+                      <!-- Aquí vamos a mostrar los valores en porcentaje en las barras de progreso -->
+                      <div class="progress-bar" role="progressbar" style="width: <?php echo ($t_Op_Emitido) * 100; ?>%" aria-valuenow="<?php echo $stEmitido; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo ($t_Op_stFirmado) * 100; ?>%" aria-valuenow="<?php echo $stFirmado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+
+                      <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo ($t_Op_stAceptado) * 100; ?>%" aria-valuenow="<?php echo $stAceptado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo ($t_Op_stAnulado) * 100; ?>%" aria-valuenow="<?php echo $stAnulado; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo ($t_Op_stFisico) * 100; ?>%" aria-valuenow="<?php echo $stFisico; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <ul class="list-unstyled mb-0 pt-2 crm-deals-status">
                       <li class="success">
@@ -1644,7 +1332,6 @@ if (!isset($_SESSION["nombre"])) {
                   </div>
                 </div>
               </div>
-
 
               <div class="col-xxl-12 col-xl-6">
                 <div class="card custom-card">
@@ -1785,14 +1472,7 @@ if (!isset($_SESSION["nombre"])) {
     </div>
     <!-- End::row-1 -->
 
-
-
-
-
-
     <!--Fin-Contenido-->
-
-
     <div class="modal fade" id="ModalNnotificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" style="width: 50% !important;">
         <div class="modal-content">
@@ -1830,16 +1510,9 @@ if (!isset($_SESSION["nombre"])) {
             </div>
           </form>
 
-
-
         </div>
       </div>
     </div>
-
-
-
-
-
 
     <div class="modal fade" id="ModalComprobantes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" style="width: 30% !important;">
@@ -1862,8 +1535,6 @@ if (!isset($_SESSION["nombre"])) {
 
           </table>
 
-
-
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <button type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
           </div>
@@ -1874,9 +1545,6 @@ if (!isset($_SESSION["nombre"])) {
       </div>
     </div>
 
-
-
-
   <?php
 
   } else {
@@ -1884,17 +1552,11 @@ if (!isset($_SESSION["nombre"])) {
     require 'noacceso.php';
   }
 
-
-
   require 'footer.php';
-
-
 
   ?>
 
   <script type="text/javascript" src="scripts/caja.js"></script>
-
-
 
   <script>
     var totaArticulosRegistrados = <?php echo $totaArticulosRegistrados; ?>;
@@ -1959,10 +1621,6 @@ if (!isset($_SESSION["nombre"])) {
     });
   </script>
 
-
-
-
-
   <script type="text/javascript">
     function reloadPage() {
       location.reload(true)
@@ -1978,7 +1636,6 @@ if (!isset($_SESSION["nombre"])) {
       preventDuplicates: false,
       onclick: null
     };
-
 
     showComprobantes();
 
@@ -2014,8 +1671,6 @@ if (!isset($_SESSION["nombre"])) {
       $("#ModalComprobantes").modal('hide');
     }
 
-
-
     $(document).ready(function() {
       showNotification();
       setTimeout(function() {
@@ -2024,13 +1679,6 @@ if (!isset($_SESSION["nombre"])) {
       }, 8000);
 
     });
-
-
-
-
-
-
-
 
     function nextM(idnotificacion) {
 
@@ -2041,7 +1689,6 @@ if (!isset($_SESSION["nombre"])) {
       });
 
     }
-
 
     function showNotification() {
       tabla = $('#listanotificaciones').dataTable({
@@ -2074,12 +1721,6 @@ if (!isset($_SESSION["nombre"])) {
 
     };
 
-
-
-
-
-
-
     function showComprobantes() {
       tabla = $('#listacomprobantes2').dataTable({
         "aProcessing": true,
@@ -2090,7 +1731,6 @@ if (!isset($_SESSION["nombre"])) {
         dom: 'Bfrtip',
         searching: false,
         lengthChange: false,
-
 
         buttons: [],
         "ajax": {
@@ -2121,10 +1761,6 @@ if (!isset($_SESSION["nombre"])) {
 
     }
 
-
-
-
-
     function estadoNoti() {
       var estanoti = document.getElementById("estadonoti").checked;
       if (estanoti == true) {
@@ -2133,8 +1769,6 @@ if (!isset($_SESSION["nombre"])) {
         $("#selestado").val("0");
       }
     }
-
-
 
     // Prepare the data for ApexCharts
     var categories = [<?php echo $fechasv; ?>];
@@ -2233,8 +1867,6 @@ if (!isset($_SESSION["nombre"])) {
       });
     }
 
-
-
     var categoriesc = [<?php echo $fechasc; ?>];
     var dataValuesc = [<?php echo $totalesc; ?>];
 
@@ -2324,8 +1956,6 @@ if (!isset($_SESSION["nombre"])) {
       });
     }
   </script>
-
-
 
 <?php
 
