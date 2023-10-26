@@ -195,7 +195,7 @@ switch ($_GET["op"]) {
 					<div class="dropdown">
 						<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones</button>
 						<div class="dropdown-menu" style="">
-							<a class="dropdown-item" href="' . $url . $reg->codigo . '&st=' . $reg->st2 . '&pr=' . $reg->precio . '">Código de barra</a>
+							<a class="dropdown-item" href="' . $url . $reg->codigo . '&st=' . $reg->st2 . '&pr=' . $reg->precio . '" target="_blank" >Código de barra</a>
 							<a class="dropdown-item" onclick="mostrar(' . $reg->idarticulo . ')" >Editar artículo</a>
 							<a class="dropdown-item" onclick="desactivar(' . $reg->idarticulo . ')" >Desactivar articulo</a>
 						</div>
@@ -223,7 +223,7 @@ switch ($_GET["op"]) {
 				"4" => $reg->stock,
 				"5" => $reg->precio,
 				"6" => $reg->costo_compra,
-				"7" => ($reg->imagen == "") ? "<img src='../files/articulos/simagen.png' height='60px' width='60px'>" :	"<img src='$rutaimagen$reg->imagen' height='60px' width='60px'>",
+				"7" => ($reg->imagen == "") ? "<img src='../files/articulos/simagen.png' height='40px' width='auto'>" :	"<img src='$rutaimagen$reg->imagen' height='60px' width='60px'>",
 				"8" => ($reg->estado) ? '<span class="label bg-green">A</span>' :	'<span class="label bg-red">I</span>'
 			);
 		}

@@ -56,33 +56,33 @@ if ($action == 'listarProducto') {
     $imagenURL = $baseURL . '/files/articulos/' . (empty($reg->imagen) ? 'simagen.png' : $reg->imagen);
 
     $data[] = array(
-      'idarticulo' => $reg->idarticulo,
-      'idfamilia' => $reg->idfamilia,
+      'idarticulo'    => $reg->idarticulo,
+      'idfamilia'     => $reg->idfamilia,
       'codigo_proveedor' => $reg->codigo_proveedor,
-      'codigo' => $reg->codigo,
-      'familia' => $reg->familia,
-      'nombre' => $reg->nombre,
-      'stock' => $reg->stock,
-      'precio' => $reg->precio,
-      'costo_compra' => $reg->costo_compra,
-      'precio_unitario' => $reg->precio_unitario,
-      'cicbper' => $reg->cicbper,
-      'mticbperu' => $reg->mticbperu,
+      'codigo'        => $reg->codigo,
+      'familia'       => $reg->familia,
+      'nombre'        => $reg->nombre,
+      'stock'         => $reg->stock ,
+      'precio'        => empty($reg->precio) ? 0 : floatval($reg->precio),
+      'costo_compra'  => empty($reg->costo_compra) ? 0 : floatval($reg->costo_compra),
+      'precio_unitario' => empty($reg->precio_unitario) ? 0 : floatval($reg->precio_unitario),
+      'cicbper'       => $reg->cicbper,
+      'mticbperu'     => $reg->mticbperu,
       // 'factorconversion' => $reg->factorconversion,
       //(a.factorc * a.stock) as factorconversion,
-      'factorc' => $reg->factorc,
-      'descrip' => $reg->descrip,
-      'tipoitem' => $reg->tipoitem,
-      'imagen' => $imagenURL,
+      'factorc'       => $reg->factorc,
+      'descrip'       => $reg->descrip,
+      'tipoitem'      => $reg->tipoitem,
+      'imagen'        => $imagenURL,
       // Utilizar la URL completa de la imagen
       'precio_final_kardex' => $reg->precio_final_kardex,
       'unidad_medida' => $reg->unidad_medida,
-      'ccontable' => $reg->ccontable,
-      'st2' => $reg->st2,
-      'nombreum' => $reg->nombreum,
-      'abre' => $reg->abre,
+      'ccontable'     => $reg->ccontable,
+      'st2'           => empty($reg->st2) ? 0 : floatval($reg->st2),
+      'nombreum'      => $reg->nombreum,
+      'abre'          => $reg->abre,
       'fechavencimiento' => $reg->fechavencimiento,
-      'nombreal' => $reg->nombreal
+      'nombreal'      => $reg->nombreal
     );
   }
   $results = array(
@@ -97,18 +97,9 @@ if ($action == 'listarProducto') {
 //Listar Categorias : 
 
 if ($action == 'listarCategorias') {
-  $rspta = $posmodelo->listarcategorias();
-  $data = array();
-
-  while ($reg = $rspta->fetch_object()) {
-    $data[] = array(
-      'idfamilia' => $reg->idfamilia,
-      'familia' => $reg->familia,
-      'estado' => $reg->estado
-    );
-  }
+  $rspta = $posmodelo->listarcategorias();  
   $results = array(
-    "ListaCategorias" => $data
+    "ListaCategorias" => $rspta
   );
 
   header('Content-type: application/json');

@@ -83,13 +83,13 @@ if (!isset($_SESSION["nombre"])) {
                   <label for="recipient-name" class="col-form-label">Almacen:</label>
                   <input type="hidden" name="idarticulo" id="idarticulo">
                   <input type="hidden" name="idempresa" id="idempresa" value="<?php echo $_SESSION['idempresa']; ?>">
-                  <select class="form-control" name="idalmacen" id="idalmacen" required onchange="focusfamil()">
+                  <select class="form-control " name="idalmacen" id="idalmacen" required onchange="focusfamil()" >
                   </select>
                 </div>
 
                 <div class="mb-3 col-lg-3">
                   <label for="recipient-name" class="col-form-label">Categoria:</label>
-                  <select class="form-control" name="idfamilia" id="idfamilia" required>
+                  <select  name="idfamilia" id="idfamilia" class="form-control select2" required style="width: 100%;">
                   </select>
                 </div>
 

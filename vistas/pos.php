@@ -36,21 +36,22 @@ if (!isset($_SESSION["nombre"])) {
           <div class="d-flex gap-3">
             <a class="btn btn-warning d-flex align-items-center" href="boleta.php"><i class="fa fa-backward"></i></a>
 
-            <button type="button" id="btn_modalventas" data-bs-toggle="modal" data-bs-target="#ModalListaVentas" class="btn btn-warning"><i
-                class="fa-solid fa-boxes-stacked"></i></button>
+            <button type="button" id="btn_modalventas" data-bs-toggle="modal" data-bs-target="#ModalListaVentas" class="btn btn-warning">
+              <i class="fa-solid fa-boxes-stacked"></i>
+            </button>
 
+            <button type="button" class="btn btn-blue" id="btn_modalproducto" >
+              <i class="fa-solid fa-plus"></i> <span class="d-none d-md-inline ms-2">Agregar Item</span>
+            </button>
 
+            
 
-            <button type="button" class="btn btn-blue" id="btn_modalproducto"><i class="fa-solid fa-plus"></i> <span
-                class="d-none d-md-inline ms-2">Agregar Item</span></button>
-
-            <select hidden class="form-select w-auto" name="codigo_tributo_18_3" id="codigo_tributo_18_3" data-bs-toggle="tooltip"
-              data-bs-placement="bottom" data-bs-title="Impuesto"></select>
+            <select class="form-select w-auto" name="codigo_tributo_18_3" id="codigo_tributo_18_3" data-bs-toggle="tooltip"  data-bs-placement="bottom" data-bs-title="Impuesto"></select>
 
             <input hidden hidden name="nombre_trixbuto_4_p" id="nombre_trixbuto_4_p">
             <!-- <select class="form-control w-auto" name="codigo_tributo_18_3" id="codigo_tributo_18_3" onchange="tributocodnon()">TRIBUTO</select> -->
 
-            <select hidden class="form-select w-auto" autofocus name="vendedorsitio" id="vendedorsitio" data-bs-toggle="tooltip"
+            <select class="form-select w-auto" autofocus name="vendedorsitio" id="vendedorsitio" data-bs-toggle="tooltip"
               data-bs-placement="bottom" data-bs-title="Vendedor"></select>
 
             <!-- <select class="form-control" name="tipo_moneda_24" id="tipo_moneda_24" onchange="tipodecambiosunat();"> -->
@@ -60,7 +61,7 @@ if (!isset($_SESSION["nombre"])) {
               <option value="USD" disabled>USD</option>
             </select>
 
-            <select hidden name="tipo_moneda" id="tipo_moneda">
+            <select name="tipo_moneda" id="tipo_moneda">
               <option value="PEN" selected="true">PEN</option>
               <option value="USD" disabled>USD</option>
             </select>
@@ -941,25 +942,26 @@ if (!isset($_SESSION["nombre"])) {
 
 
   <script>
+    $(document).ready(function() {      
 
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-    const swiper = new Swiper('.swiper', {
-      // Optional parameters
-      direction: 'horizontal',
-      autoplay: true,
-      slidesPerView: 'auto',
-      spaceBetween: 10,
-      // allowTouchMove: false,
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+      const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        direction: 'horizontal',
+        autoplay: true,
+        slidesPerView: 'auto',
+        spaceBetween: 10,
+        // allowTouchMove: false,
+        // Navigation arrows
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
 
+      });
     });
-
   </script>
   <?php
 }

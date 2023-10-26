@@ -28,28 +28,23 @@ $iva = $("#iva").val();
 /* ---------------------------------------------------------------- */
 //                      LISTAR CATEGORIAS
 
-function listarCategorias() {
+function listarCategorias() { 
 
   $.ajax({
     url: urlconsumo + 'pos.php?action=listarCategorias',
     type: "get",
     dataType: "json",
     success: function (data) {
-
       const categoriaContainer = document.getElementById('category-content');
-
-
       data.ListaCategorias.forEach(categoria => {
 
         var card = document.createElement('div');
         card.classList.add('swiper-slide');
 
         card.innerHTML = `
-          <div class="rounded-pill slider-item categoryclic" data-idfamilia="${categoria.idfamilia}">
-              <img
-                  src="https://htmlcolorcodes.com/assets/images/colors/sky-blue-color-solid-background-1920x1080.png"
-                  alt="dd" height="30px" width="30px" class="rounded-circle me-2">
-              <span class="fw-600 f-12 category">${categoria.familia}</span>
+          <div class="rounded-pill slider-item categoryclic" data-idfamilia="${categoria.idfamilia}" onclick="listarPorCategoria(this)">
+            <span class="rounded-circle mx-2 text-center px-2 py-1" style="background-color: skyblue;">${categoria.cant_producto}</span>
+            <span class="fw-600 f-12 category">${categoria.familia}</span>
           </div>
         `;
 
@@ -57,7 +52,7 @@ function listarCategorias() {
         categoriaContainer.appendChild(card);
 
         // Add a click event listener to the category
-        card.querySelector('.categoryclic').addEventListener('click', listarPorCategoria);
+        // card.querySelector('.categoryclic').addEventListener('click', listarPorCategoria);
 
       });
 
@@ -99,7 +94,7 @@ function listarProductos(busqueda) {
       productContainer.empty(); // Limpiar productos existentes
 
       if (data.ListaProductos && data.ListaProductos.length > 0) {
-        data.ListaProductos.forEach(product => {
+        data.ListaProductos.forEach(product => { 
 
           let productImage = product.imagen;
 
@@ -112,7 +107,7 @@ function listarProductos(busqueda) {
 
           var productCardAlert = document.createElement('div');
 
-          var productStock = parseFloat((product.stock).replace(',', ''));
+          var productStock = product.st2;
 
           if (productStock < 5 && productStock > 0) {
             productCardAlert.classList.add('card', 'card-warning', 'product-card', 'cursor-pointer');
@@ -182,24 +177,27 @@ $('#search_product').on('input', function () {
 
 /* ---------------------------------------------------------------- */
 //                   LISTAR PRODUCTOS POR CATEGORIA
+// $('.categoryclic').on('click', function () { console.log(9);
+//   // e.preventDefault();
+//   listarPorCategoria(this);
+// });
 
-function listarPorCategoria(event) {
-  event.preventDefault();
+// $(".categoryclic").click(function(){
+//   alert('Evento click sobre un input text con nombre="nombre1"');
+// });
+
+function listarPorCategoria(event) {   
 
   $('#loader_product').show();
 
-
   // Get the idfamilia from the clicked category
-  var idfamilia = event.target.getAttribute('data-idfamilia');
+  var idfamilia = $(event).attr('data-idfamilia'); console.log(`idfamilia: ${idfamilia}`);
 
   // Remove the 'select' class from all category elements
-  var allCategories = document.querySelectorAll('.categoryclic');
-  allCategories.forEach(category => {
-    category.classList.remove('select');
-  });
+  $('.categoryclic').removeClass('select'); 
 
   // Add the 'select' class to the clicked category
-  event.target.classList.add('select');
+  $(event).addClass('select');
 
   busqueda = $('#search_product').val();
 
@@ -216,23 +214,15 @@ function listarPorCategoria(event) {
       type: 'get',
       dataType: 'json',
       success: function (data) {
-
         const productContainer = document.getElementById('product-container');
-
         // Clear any existing products in the product container
         productContainer.innerHTML = '';
 
-
         if (data.ListaProductos && data.ListaProductos.length > 0) {
-
           data.ListaProductos.forEach(product => {
-
             let productImage = product.imagen;
-
             if (!productImage || productImage === '../files/articulos/') {
-
-              productImage = 'https://www.phswarnerhoward.co.uk/assets/images/no_img_avaliable.jpg';
-
+              productImage = '../files/articulos/no_img_avaliable.jpg';
             }
 
             var productCard = document.createElement('div');
@@ -240,7 +230,7 @@ function listarPorCategoria(event) {
 
             var productCardAlert = document.createElement('div');
 
-            var productStock = parseFloat((product.stock).replace(',', ''));
+            var productStock = product.st2;
 
             if (productStock < 5 && productStock > 0) {
               productCardAlert.classList.add('card', 'card-warning', 'product-card', 'cursor-pointer');
@@ -293,14 +283,9 @@ function listarPorCategoria(event) {
     });
 
   } else {
-
     $('#product-container').html('<p>Seleccione una categoría.</p>');
-
     $('#loader_product').hide();
-
   }
-
-
 }
 
 /* ---------------------------------------------------------------- */
@@ -309,16 +294,13 @@ function listarPorCategoria(event) {
 // Enlace "Ver Todos"
 $('#ver-todos-link').on('click', function (e) {
   e.preventDefault();
-
   listarTodosProductos();
 });
 
 function listarTodosProductos() {
   var allCategories = document.querySelectorAll('.categoryclic');
 
-  allCategories.forEach(category => {
-    category.classList.remove('select');
-  });
+  allCategories.forEach(category => {  category.classList.remove('select'); });
 
   listarProductos('');
 }
@@ -328,7 +310,6 @@ function listarTodosProductos() {
 
 $('#btn_deletefilter').on('click', function (e) {
   e.preventDefault();
-
   $('#search_product').val('');
 })
 
@@ -1691,12 +1672,9 @@ $.post("../ajax/factura.php?op=selectTributo", function (r) {
 /* ---------------------------------------------------------------- */
 //                   OBTENER VENDEDOR (vendedorsitio)  
 
-$.post(
-  "../ajax/vendedorsitio.php?op=selectVendedorsitio&idempresa=" + $idempresa,
-  function (r) {
-    $("#vendedorsitio").html(r);
-  }
-);
+$.post( "../ajax/vendedorsitio.php?op=selectVendedorsitio&idempresa=" + $idempresa,function (r) {
+  $("#vendedorsitio").html(r);
+});
 
 /* ---------------------------------------------------------------- */
 //                   OBTENER TIPO DOCUMENTO (tipo_doc_ide)  
@@ -1988,9 +1966,7 @@ function agregarClientexDoc(e) {
     $("#razon_social").val("");
     $("#domicilio_fiscal").val("");
 
-    $.post(
-      "../ajax/boleta.php?op=listarClientesboletaxDoc&doc=" + dni,
-      function (data, status) {
+    $.post( "../ajax/boleta.php?op=listarClientesboletaxDoc&doc=" + dni, function (data, status) {
         data = JSON.parse(data);
         if (data != null) {
           $("#idcliente").val(data.idpersona);
@@ -2231,13 +2207,10 @@ function quitasuge2() {
 function tipodecambiosunat() {
   if ($("#tipo_moneda_24").val() == "USD") {
     fechatcf = $("#fecha_emision_01").val();
-    $.post(
-      "../ajax/boleta.php?op=tcambiog&feccf=" + fechatcf,
-      function (data, status) {
-        data = JSON.parse(data);
-        $("#tcambio").val(data.venta);
-      }
-    );
+    $.post( "../ajax/boleta.php?op=tcambiog&feccf=" + fechatcf, function (data, status) {
+      data = JSON.parse(data);
+      $("#tcambio").val(data.venta);
+    });
   } else {
     $("#tcambio").val("0");
   }
@@ -2247,10 +2220,8 @@ function tipodecambiosunat() {
 //             FUNCION TRIBUTOCODNON (codigo_tributo_18_3)
 
 function tributocodnon() {
-
   $("#codigo_tributo_h").val($("#codigo_tributo_18_3").val());
   $("#nombre_tributo_h").val($("#codigo_tributo_18_3 option:selected").text());
-
 }
 
 /* ---------------------------------------------------------------- */
@@ -2258,26 +2229,20 @@ function tributocodnon() {
 
 function capturarhora() {
   var f = new Date();
-
   cad = f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds();
-
   $("#hora").val(cad);
 }
 
 /* ---------------------------------------------------------------- */
 //                       FUNCION MAYUSCULA
 
-function mayus(e) {
-  e.value = e.value.toUpperCase();
-}
+function mayus(e) { e.value = e.value.toUpperCase(); }
 
 /* ---------------------------------------------------------------- */
 //                   FUNCION FOCUS (domicilio_fiscal)
 
 function focusDir(e) {
-  if (e.keyCode === 13 && !e.shiftKey) {
-    document.getElementById("domicilio_fiscal").focus();
-  }
+  if (e.keyCode === 13 && !e.shiftKey) {  document.getElementById("domicilio_fiscal").focus();  }
 }
 
 /* ---------------------------------------------------------------- */

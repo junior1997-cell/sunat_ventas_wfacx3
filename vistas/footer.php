@@ -9,9 +9,6 @@ $datose = $datos->fetch_object();
 </div>
 </div>
 
-
-
-
 </div>
 <!-- Scroll To Top -->
 <div class="scrollToTop">
@@ -44,6 +41,9 @@ $datose = $datos->fetch_object();
 <script src="../assets/libs/apexcharts/apexcharts.min.js"></script>
 <!-- Chartjs Chart JS -->
 <script src="../assets/libs/chart.js/chart.min.js"></script>
+<!-- select2 -->
+<script src="../assets/libs/select2/js/select2.full.min.js"></script>
+
 <!-- CRM-Dashboard -->
 <script src="../assets/js/crm-dashboard.js"></script>
 <!-- Custom JS -->
